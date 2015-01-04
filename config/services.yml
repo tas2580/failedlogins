@@ -1,0 +1,7 @@
+services:
+    tas2580.failed_logins.listener:
+        class: tas2580\failed_logins\event\listener
+        arguments:
+            - @config
+        tags:
+            - { name: event.listener }
