@@ -18,5 +18,6 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'TRY_TO_LOGIN_FAIL'		=> 'Das anmelden für den Benutzernamen <b>%s</b> ist fehlgeschlagen.',
+	'FAILED_LOGINS_COUNT'	=> 'Seit deinem letzten Login gab es %d fehlgeschlagene Loginversuche!',
+	'TRY_TO_LOGIN_FAIL'		=> 'Die Anmeldung des Benutzers: <b>%s</b> ist fehlgeschlagen.',
 ));

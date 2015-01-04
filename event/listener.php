@@ -7,7 +7,7 @@
 *
 */
 
-namespace tas2580\failed_logins\event;
+namespace tas2580\failedlogins\event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,6 +18,7 @@ class listener implements EventSubscriberInterface
 {
 	/** @var \phpbb\config\config */
 	protected $config;
+	
 	private $login_try = false;
 
 	/**
@@ -26,9 +27,12 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\config\config $config
 	* @access public
 	*/
-	public function __construct(\phpbb\config\config $config)
+	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request)
 	{
-		$this->config = $config;
+		$this->template = $template;
+		$this->user = $user;
+		$this->db = $db;
+		$this->request = $request;
 	}
 
 	/**
@@ -45,6 +49,7 @@ class listener implements EventSubscriberInterface
 			'core.user_setup'			=> 'login_try',
 			'core.login_box_redirect'	=> 'login_success',
 			'core.page_footer'			=> 'login_check',
+			'core.page_header'			=> 'display_message',
 		);
 	}
 
@@ -57,10 +62,31 @@ class listener implements EventSubscriberInterface
 	*/
 	public function login_try($event)
 	{	
-		global $request;
-		if($request->is_set('login'))
+		if($this->request->is_set('login'))
 		{
 			$this->login_try = true;
+		}
+	}
+	
+	/**
+	* Display message to the user if there where failed login trys
+	*
+	* @param object $event The event object
+	* @return null
+	* @access public
+	*/
+	public function display_message($event)
+	{
+		if($this->user->data['failed_logins_count'] > 0)
+		{
+			$this->user->add_lang_ext('tas2580/failedlogins', 'common');
+			$this->template->assign_vars(array(
+				'FAILED_LOGINS'		=> sprintf($this->user->lang['FAILED_LOGINS_COUNT'], $this->user->data['failed_logins_count']),
+			));
+			
+			$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = 0
+						WHERE user_id = ' . (int) $this->user->data['user_id'];
+			$this->db->sql_query($sql);
 		}
 	}
 	
@@ -87,13 +113,17 @@ class listener implements EventSubscriberInterface
 	{
 		if($this->login_try === true)
 		{
-			global $phpbb_log, $user, $request;
-			$username = $request->variable('username', '', true);
+			global $phpbb_log;
+			$username = $this->request->variable('username', '', true);
 
-			$user->add_lang_ext('tas2580/failed_logins', 'common');
-			$user_ip = (empty($user->ip)) ? '' : $user->ip;
+			$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = failed_logins_count + 1
+						WHERE username = "' . $this->db->sql_escape($username) . '"';
+			$this->db->sql_query($sql);
+			
+			$this->user->add_lang_ext('tas2580/failedlogins', 'common');
+			$user_ip = (empty($this->user->ip)) ? '' : $this->user->ip;
 			$additional_data['reportee_id'] = ANONYMOUS;
-			$phpbb_log->add('user', ANONYMOUS, $user_ip, sprintf($user->lang['TRY_TO_LOGIN_FAIL'], $username), time(), $additional_data);
+			$phpbb_log->add('user', ANONYMOUS, $user_ip, sprintf($this->user->lang['TRY_TO_LOGIN_FAIL'], $username), time(), $additional_data);
 		}
 	}
 }

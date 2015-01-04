@@ -18,5 +18,6 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
+	'FAILED_LOGINS_COUNT'	=> 'Since your last visit there was %d failed login attempts!',
 	'TRY_TO_LOGIN_FAIL'		=> 'Tryed to login failed for username: <b>%s</b>',
 ));
