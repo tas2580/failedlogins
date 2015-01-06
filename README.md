@@ -1,4 +1,4 @@
-phpBB-3.1-Failed-logins
+phpBB 3.1 - Failed logins
 =======================
 This is an extension for the phpBB forums software. You need an instalation of phpBB 3.1.x to use this.
 
