@@ -16,15 +16,28 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var \phpbb\config\config */
-	protected $config;
+	/** @var \phpbb\template\template */
+	protected $template;
 	
+	/** @var \phpbb\user\user */
+	protected $user;
+	
+	/** @var \phpbb\db\driver\driver */
+	protected $db;
+	
+	/** @var \phpbb\request\request */
+	protected $request;
+	
+	/** @var $login_try */
 	private $login_try = false;
 
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config $config
+	* @param \phpbb\template\template	$template
+	* @param \phpbb\user				$user
+	* @param \phpbb\db\driver\driver	$db
+	* @param \phpbb\request\request		$request
 	* @access public
 	*/
 	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request)
@@ -45,11 +58,10 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			//'core.login_box_redirect'	=> 'log_failed',
-			'core.user_setup'			=> 'login_try',
-			'core.login_box_redirect'	=> 'login_success',
-			'core.page_footer'			=> 'login_check',
-			'core.page_header'			=> 'display_message',
+			'core.user_setup'			=> 'user_setup',
+			'core.login_box_redirect'	=> 'login_box_redirect',
+			'core.page_footer'			=> 'page_footer',
+			'core.page_header'			=> 'page_header',
 		);
 	}
 
@@ -60,33 +72,12 @@ class listener implements EventSubscriberInterface
 	* @return null
 	* @access public
 	*/
-	public function login_try($event)
+	public function user_setup($event)
 	{	
+		$this->user->add_lang_ext('tas2580/failedlogins', 'common');
 		if($this->request->is_set('login'))
 		{
 			$this->login_try = true;
-		}
-	}
-	
-	/**
-	* Display message to the user if there where failed login trys
-	*
-	* @param object $event The event object
-	* @return null
-	* @access public
-	*/
-	public function display_message($event)
-	{
-		if($this->user->data['failed_logins_count'] > 0)
-		{
-			$this->user->add_lang_ext('tas2580/failedlogins', 'common');
-			$this->template->assign_vars(array(
-				'FAILED_LOGINS'		=> sprintf($this->user->lang['FAILED_LOGINS_COUNT'], $this->user->data['failed_logins_count']),
-			));
-			
-			$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = 0
-						WHERE user_id = ' . (int) $this->user->data['user_id'];
-			$this->db->sql_query($sql);
 		}
 	}
 	
@@ -97,7 +88,7 @@ class listener implements EventSubscriberInterface
 	* @return null
 	* @access public
 	*/
-	public function login_success($event)
+	public function login_box_redirect($event)
 	{
 		$this->login_try = false;
 	}
@@ -109,7 +100,7 @@ class listener implements EventSubscriberInterface
 	* @return null
 	* @access public
 	*/
-	public function login_check($event)
+	public function page_footer($event)
 	{
 		if($this->login_try === true)
 		{
@@ -122,8 +113,31 @@ class listener implements EventSubscriberInterface
 			
 			$this->user->add_lang_ext('tas2580/failedlogins', 'common');
 			$user_ip = (empty($this->user->ip)) ? '' : $this->user->ip;
-			$additional_data['reportee_id'] = ANONYMOUS;
-			$phpbb_log->add('user', ANONYMOUS, $user_ip, sprintf($this->user->lang['TRY_TO_LOGIN_FAIL'], $username), time(), $additional_data);
+			$phpbb_log->add('user', ANONYMOUS, $user_ip, 'TRY_TO_LOGIN_FAIL', time(), array(
+				'reportee_id'   => ANONYMOUS,
+				'username'      => $username,
+			 ));
+		}
+	}
+	
+	/**
+	* Display message to the user if there where failed login trys
+	*
+	* @param object $event The event object
+	* @return null
+	* @access public
+	*/
+	public function page_header($event)
+	{
+		if($this->user->data['failed_logins_count'] > 0)
+		{
+			$this->template->assign_vars(array(
+				'FAILED_LOGINS'		=> ($this->user->data['failed_logins_count'] == 1) ? $this->user->lang['ONE_FAILED_LOGIN'] : sprintf($this->user->lang['FAILED_LOGINS_COUNT'], $this->user->data['failed_logins_count']),
+			));
+			
+			$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = 0
+						WHERE user_id = ' . (int) $this->user->data['user_id'];
+			$this->db->sql_query($sql);
 		}
 	}
 }
