@@ -15,6 +15,7 @@ if (empty($lang) || !is_array($lang))
     $lang = array();
 }
 $lang = array_merge($lang, array(
+	'ONE_FAILED_LOGIN'		=> 'Sinds jouw laatste bezoek zijn er %d foute aanmeldingen!',
 	'FAILED_LOGINS_COUNT'	=> 'Sinds jouw laatste bezoek zijn er %d foute aanmeldingen!',
 	'TRY_TO_LOGIN_FAIL'		=> 'Mislukte aanmelding voor gebruikersnaam: <b>%s</b>',
 ));
