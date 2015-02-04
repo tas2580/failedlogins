@@ -12,7 +12,7 @@ class initial_module extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['failedlogins_version']) && version_compare($this->config['pss_version'], '0.1.1', '>=');
+		return isset($this->config['failedlogins_version']) && version_compare($this->config['pss_version'], '0.1.3', '>=');
 	}
 
 	public function update_schema()
@@ -25,6 +25,7 @@ class initial_module extends \phpbb\db\migration\migration
 			),
 		);
 	}
+	
 	public function revert_schema()
 	{
 			return array(
@@ -33,11 +34,12 @@ class initial_module extends \phpbb\db\migration\migration
 				),
 			);
 	}
+	
 	public function update_data()
 	{
 		return array(
 			// Current version
-			array('config.add', array('failedlogins_version', '0.1.1')),
+			array('config.add', array('failedlogins_version', '0.1.3')),
 			// Add ACP modules
 		);
 	}
