@@ -19,6 +19,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ONE_FAILED_LOGIN'		=> 'Son ziyaretinizden beri başarısız oturum açma girişimi oldu!',
-	'FAILED_LOGINS_COUNT'	=> 'Son ziyaretinizden beri %d başarısız oturum açma girişimleri oldu!',
+	'FAILED_LOGINS_COUNT'	=> 'Son ziyaretinizden beri %d başarısız oturum açma girişimi oldu!',
 	'TRY_TO_LOGIN_FAIL'		=> '<strong>Başarısız giriş</strong><br />» Kullanıcı adı: %s',
 ));
