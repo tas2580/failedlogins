@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - tas2580 tas2580 failed logins
-* @copyright (c) 2014 tas2580
+* @copyright (c) 2015 tas2580
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -12,7 +12,7 @@ class initial_module extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
-		return isset($this->config['failedlogins_version']) && version_compare($this->config['pss_version'], '0.1.3', '>=');
+		return isset($this->config['failedlogins_version']) && version_compare($this->config['failedlogins_version'], '0.1.3', '>=');
 	}
 
 	public function update_schema()
@@ -20,7 +20,7 @@ class initial_module extends \phpbb\db\migration\migration
 		return array(
 			'add_columns' => array(
 				$this->table_prefix . 'users' => array(
-					'failed_logins_count'	=> array('INT:', 0),
+					'failed_logins_count'	=> array('UINT:', 0),
 				),
 			),
 		);

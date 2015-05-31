@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - tas2580 failed logins
-* @copyright (c) 2014 tas2580 (https://tas2580.net)
+* @copyright (c) 2015 tas2580 (https://tas2580.net)
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -36,7 +36,7 @@ class listener implements EventSubscriberInterface
 	*
 	* @param \phpbb\template\template	$template
 	* @param \phpbb\user				$user
-	* @param \phpbb\db\driver\driver	$db
+	* @param \phpbb\db\driver\driver		$db
 	* @param \phpbb\request\request		$request
 	* @access public
 	*/
@@ -87,7 +87,7 @@ class listener implements EventSubscriberInterface
 	public function login_box_failed($event)
 	{
 		$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = failed_logins_count + 1
-					WHERE username = "' . $this->db->sql_escape($event['username']) . '"';
+					WHERE username_clean = "' . $this->db->sql_escape(strtolower($event['username'])) . '"';
 		$this->db->sql_query($sql);
 
 		$this->log->add('user', ANONYMOUS, $this->user->ip, 'TRY_TO_LOGIN_FAIL', time(), array(
