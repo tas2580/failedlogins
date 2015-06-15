@@ -23,7 +23,7 @@ class initial_module extends \phpbb\db\migration\migration
 		return array(
 			'add_columns' => array(
 				$this->table_prefix . 'users' => array(
-					'failed_logins_count' => array('UINT:', 0),
+					'failed_logins_count' => array('UINT', 0),
 				),
 			),
 		);
