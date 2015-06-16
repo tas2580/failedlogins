@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "Log failed logins into user log.",
 	"homepage": "https://tas2580.net/downloads/download-9.html",
-	"version": "1.0.0-RC1",
+	"version": "1.0.0-RC2",
 	"keywords": ["phpbb", "extension", "login"],
 	"license": "GPL-2.0",
 	"authors": [

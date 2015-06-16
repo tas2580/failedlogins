@@ -15,7 +15,7 @@ class initial_module extends \phpbb\db\migration\migration
 
 	public function effectively_installed()
 	{
-		return isset($this->config['failedlogins_version']) && version_compare($this->config['failedlogins_version'], '1.0.0-RC1', '>=');
+		return isset($this->config['failedlogins_version']) && version_compare($this->config['failedlogins_version'], '1.0.0-RC2', '>=');
 	}
 
 	public function update_schema()
@@ -42,7 +42,7 @@ class initial_module extends \phpbb\db\migration\migration
 	{
 		return array(
 			// Current version
-			array('config.add', array('failedlogins_version', '1.0.0-RC1')),
+			array('config.add', array('failedlogins_version', '1.0.0-RC2')),
 			// Add ACP modules
 		);
 	}
