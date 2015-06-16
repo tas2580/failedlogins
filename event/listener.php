@@ -89,7 +89,7 @@ class listener implements EventSubscriberInterface
 	public function login_box_failed($event)
 	{
 		$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = failed_logins_count + 1
-					WHERE username_clean = "' . $this->db->sql_escape(strtolower($event['username'])) . '"';
+					WHERE username_clean = "' . $this->db->sql_escape(utf8_clean_string($event['username'])) . '"';
 		$this->db->sql_query($sql);
 
 		$this->log->add('user', ANONYMOUS, $this->user->ip, 'TRY_TO_LOGIN_FAIL', time(), array(
