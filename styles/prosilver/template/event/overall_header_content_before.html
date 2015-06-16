@@ -1,5 +1,10 @@
 <!-- IF FAILED_LOGINS -->
-<div id="information" class="rules">
-	<div class="inner">{FAILED_LOGINS}</div>
+<div class="rules" id="failedlogins">
+	<div class="inner">{FAILED_LOGINS}<br /><br />
+		<form action="{U_REMOVE_MESSAGE}" method="POST" data-ajax="failedlogins.remove">
+			<input class="button2" type="submit" name="failedlogins_remove" value="{L_REMOVE_MESSAGE}" />
+			{S_FORM_TOKEN}
+		</form>
+	</div>
 </div>
 <!-- ENDIF -->

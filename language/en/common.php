@@ -35,4 +35,6 @@ $lang = array_merge($lang, array(
 	'FAILED_LOGINS_COUNT'		=> 'Since your last visit there was %d failed login attempts!',
 	'ONE_FAILED_LOGIN'			=> 'Since your last visit there was one failed login attempt!',
 	'TRY_TO_LOGIN_FAIL'		=> '<strong>Failed login</strong><br />» Username: %s',
+	'REMOVE_MESSAGE'			=> 'Remove message',
+	'REMOVED_FAILED_LOGINS'	=> 'The failed logins since last visit are now no longer displayed.'
 ));

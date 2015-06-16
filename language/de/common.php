@@ -32,7 +32,9 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 //
 $lang = array_merge($lang, array(
-	'FAILED_LOGINS_COUNT'		=> 'Seit deinem letzten Login gab es %d fehlgeschlagene Loginversuche!',
-	'ONE_FAILED_LOGIN'			=> 'Seit deinem letzten Login gab es einen fehlgeschlagenen Loginversuch!',
+	'FAILED_LOGINS_COUNT'		=> 'Seit deinem letzten Besuch gab es %d fehlgeschlagene Loginversuche!',
+	'ONE_FAILED_LOGIN'			=> 'Seit deinem letzten Besuch gab es einen fehlgeschlagenen Loginversuch!',
 	'TRY_TO_LOGIN_FAIL'		=> '<strong>Anmeldung fehlgeschlagen</strong><br />» Benutzername: %s',
+	'REMOVE_MESSAGE'			=> 'Meldung entfernen',
+	'REMOVED_FAILED_LOGINS'	=> 'Die fehlgeschlagenen Logins seit deinem letzten besuch werden jetzt nicht mehr angezeigt.'
 ));

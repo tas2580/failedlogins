@@ -63,7 +63,8 @@ class listener implements EventSubscriberInterface
 		return array(
 			'core.user_setup'		=> 'user_setup',
 			'core.login_box_failed'	=> 'login_box_failed',
-			'core.page_header'		=> 'page_header',
+			'core.login_box_redirect'	=> 'login_box_redirect',
+			'core.page_footer'		=> 'page_footer',
 		);
 	}
 
@@ -89,7 +90,7 @@ class listener implements EventSubscriberInterface
 	public function login_box_failed($event)
 	{
 		$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = failed_logins_count + 1
-					WHERE username_clean = "' . $this->db->sql_escape(utf8_clean_string($event['username'])) . '"';
+			WHERE username_clean = "' . $this->db->sql_escape(utf8_clean_string($event['username'])) . '"';
 		$this->db->sql_query($sql);
 
 		$this->log->add('user', ANONYMOUS, $this->user->ip, 'TRY_TO_LOGIN_FAIL', time(), array(
@@ -99,23 +100,58 @@ class listener implements EventSubscriberInterface
 	}
 
 	/**
+	 * Update filed logins to failed_logins_count_last and clear failed_logins_count on login
+	 *
+	 * @param object $event The event object
+	 * @return null
+	 * @access public
+	 */
+	public function login_box_redirect($event)
+	{
+		$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count_last = failed_logins_count, failed_logins_count = 0
+			WHERE user_id = ' . (int) $this->user->data['user_id'];
+		$this->db->sql_query($sql);
+	}
+
+	/**
 	 * Display message to the user if there where failed login trys
 	 *
 	 * @param object $event The event object
 	 * @return null
 	 * @access public
 	 */
-	public function page_header($event)
+	public function page_footer($event)
 	{
-		if ($this->user->data['failed_logins_count'] > 0)
+		// clear failed_logins_count_last on user action
+		if ($this->request->is_set('failedlogins_remove'))
 		{
-			$this->template->assign_vars(array(
-				'FAILED_LOGINS'	=> ($this->user->data['failed_logins_count'] == 1) ? $this->user->lang['ONE_FAILED_LOGIN'] : sprintf($this->user->lang['FAILED_LOGINS_COUNT'], $this->user->data['failed_logins_count']),
-			));
+			if (check_form_key('failedlogins_remove'))
+			{
+				$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count_last = 0
+					WHERE user_id = ' . (int) $this->user->data['user_id'];
+				$this->db->sql_query($sql);
+				if ($this->request->is_ajax())
+				{
+					trigger_error('REMOVED_FAILED_LOGINS');
+				}
+			}
+			else
+			{
+				if($this->request->is_ajax())
+				{
+					trigger_error('FORM_INVALID', E_USER_WARNING);
+				}
+			}
+		}
 
-			$sql = 'UPDATE ' . USERS_TABLE . ' SET failed_logins_count = 0
-						WHERE user_id = ' . (int) $this->user->data['user_id'];
-			$this->db->sql_query($sql);
+		// Display failed logins
+		if ($this->user->data['failed_logins_count_last'] > 0)
+		{
+			add_form_key('failedlogins_remove');
+			$this->template->assign_vars(array(
+				'U_REMOVE_MESSAGE'	=> generate_board_url() . '/' . $this->user->page['page'],
+				'FAILED_LOGINS'		=> ($this->user->data['failed_logins_count_last'] == 1) ? $this->user->lang['ONE_FAILED_LOGIN'] : sprintf($this->user->lang['FAILED_LOGINS_COUNT'], $this->user->data['failed_logins_count_last']),
+			));
 		}
 	}
 
