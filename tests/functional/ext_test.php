@@ -16,8 +16,4 @@ class ext_test extends \phpbb_functional_test_case
 	{
 		return array('tas2580/failedlogins');
 	}
-	public function test_language()
-	{
-		$this->add_lang_ext('tas2580/failedlogins', 'common');
-	}
 }
