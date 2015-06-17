@@ -43,5 +43,5 @@ $lang = array_merge($lang, array(
 	'ONE_FAILED_LOGIN'			=> 'Depuis votre dernière visite il y a eu une tentative de connexion qui a échoué !',
 	'TRY_TO_LOGIN_FAIL'		=> '<strong>Échec de la connexion</strong><br />» Nom d’utilisateur : %s',
 	'REMOVE_MESSAGE'			=> 'Masquer le message',
-	'REMOVED_FAILED_LOGINS'	=> 'Les tentatives de connexion ayant échouées depuis votre dernière visite ne seront plus affichées.'
+	'REMOVED_FAILED_LOGINS'	=> 'Les tentatives de connexion ayant échoué depuis votre dernière visite ne seront plus affichées.'
 ));
