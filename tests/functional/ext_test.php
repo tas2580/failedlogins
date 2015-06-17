@@ -14,10 +14,10 @@ class ext_test extends \phpbb_functional_test_case
 {
 	static protected function setup_extensions()
 	{
-		return array('tas2580/socialbuttons');
+		return array('tas2580/failedlogins');
 	}
 	public function test_socialbuttons()
 	{
-		$this->add_lang_ext('tas2580/socialbuttons', 'common');
+		$this->add_lang_ext('tas2580/failedlogins', 'common');
 	}
 }
