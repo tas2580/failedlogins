@@ -137,7 +137,7 @@ class listener implements EventSubscriberInterface
 			}
 			else
 			{
-				if($this->request->is_ajax())
+				if ($this->request->is_ajax())
 				{
 					trigger_error('FORM_INVALID', E_USER_WARNING);
 				}
