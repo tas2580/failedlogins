@@ -1,7 +1,6 @@
 <!-- IF FAILED_LOGINS -->
 <script type="text/javascript">
 	phpbb.addAjaxCallback('failedlogins.remove', function(data) {
-		console.log(data.S_USER_WARNING);
 		if(!data.S_USER_WARNING)
 		{
 			$('#failedlogins').remove();
