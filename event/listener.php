@@ -91,7 +91,7 @@ class listener implements EventSubscriberInterface
 	{
 		// Set the counter +1
 		$sql = 'UPDATE ' . USERS_TABLE . " SET failed_logins_count = failed_logins_count + 1
-			WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($event['username'])) . '"';
+			WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($event['username'])) . "'";
 		$this->db->sql_query($sql);
 
 		// Add to user log
