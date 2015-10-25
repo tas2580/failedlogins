@@ -4,11 +4,12 @@
 	"description": "Log failed logins into user log and display a message to the user.",
 	"homepage": "https://tas2580.net/downloads/download-9.html",
 	"version": "1.1.0-RC2",
-	"keywords": ["phpbb", "extension", "login"],
+	"keywords": ["phpbb", "extension", "login", "security", "fail"],
 	"license": "GPL-2.0",
 	"authors": [
 		{
 			"name": "tas2580",
+			"email": "mail@tas2580.net",
 			"homepage": "https://tas2580.net",
 			"role": "Developer"
 		}
