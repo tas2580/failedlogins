@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "Log failed logins into user log and display a message to the user.",
 	"homepage": "https://tas2580.net/downloads/phpbb-failed-logins/",
-	"version": "1.1.0-RC2",
+	"version": "1.1.0",
 	"keywords": ["phpbb", "extension", "login", "security", "fail"],
 	"license": "GPL-2.0",
 	"authors": [
@@ -27,9 +27,9 @@
 			"phpbb/phpbb": ">=3.1.3-RC1,<3.2.*@dev"
 		},
 		"version-check": {
-			"host": "tas2580.net",
-			"directory": "/modules/downloads/version",
-			"filename": "download9.json"
+			"host": "phpbb-versionscheck.cf",
+			"directory": "/tas2580/failedlogins/master",
+			"filename": "version-check.json"
 		}
 	}
 }
