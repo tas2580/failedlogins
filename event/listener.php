@@ -36,10 +36,10 @@ class listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\template\template	$template
-	 * @param \phpbb\user				$user
-	 * @param \phpbb\db\driver\driver		$db
-	 * @param \phpbb\request\request		$request
+	 * @param \phpbb\template\template		$template
+	 * @param \phpbb\user					$user
+	 * @param \phpbb\db\driver\driver_interface	$db
+	 * @param \phpbb\request\request			$request
 	 * @access public
 	 */
 	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\log\log $log)
